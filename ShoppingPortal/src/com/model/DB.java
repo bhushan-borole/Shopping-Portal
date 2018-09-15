@@ -80,6 +80,23 @@ public class DB {
 			return false;
 		}
 		
+		public boolean validateAdmin(String username, String password)throws SQLException {
+			dbConnect();
+			int count = 0;
+			String sql = "SELECT * FROM admin WHERE username=? AND password=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				count = 1;
+			}
+			dbClose();
+			if(count==1)
+				return true;
+			return false;
+		}
+		
 		public String getDetails(String username, String password) throws SQLException{
 			dbConnect();
 			String details="";
@@ -165,5 +182,40 @@ public class DB {
 			}
 			dbClose();
 			return productsId;
+		}
+		
+		public void deleteProducts(int id) throws SQLException {
+			dbConnect();
+			String sql = "DELETE FROM products where id="+ id;
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			dbClose();
+		}
+		public Products getProductById(int id) throws SQLException{
+			dbConnect();
+			
+			String sql = "SELECT * FROM products where id="+id;
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			Products p = new Products();
+			while(rs.next()) {
+			p.setId(rs.getInt("id"));
+			p.setName(rs.getString("name"));
+			p.setPrice(rs.getString("price"));
+			p.setFeatured(rs.getString("featured"));
+			p.setRating(rs.getString("rating"));
+			}
+			dbClose();
+			return p;
+		}
+		public void editProduct(Products p) throws SQLException{
+			dbConnect();
+			String sql = "UPDATE products set price=?, rating=? WHERE id=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, p.getPrice());
+			ps.setString(2, p.getRating());
+			ps.setInt(3, p.getId());
+			ps.executeUpdate();
+			dbClose();
 		}
 }

@@ -9,7 +9,25 @@ public class Products implements Comparable<Products>{
 	private String name;
 	private String price;
 	private String category;
+	private String rating;
+	private String featured;
 	
+	public String getFeatured() {
+		return featured;
+	}
+
+	public void setFeatured(String featured) {
+		this.featured = featured;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+
 	public String getCategory() {
 		return category;
 	}
@@ -57,6 +75,8 @@ public class Products implements Comparable<Products>{
 		Collections.sort(list, new Temp());
 		return list;
 	}
+
+	
 	
 }
 
